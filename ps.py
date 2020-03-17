@@ -11,5 +11,5 @@ if __name__ == "__main__":
   cluster_config = config["cluster"]
   util.set_gpus()
   cluster = tf.train.ClusterSpec(cluster_config["addresses"])
-  server = tf.train.Server(cluster, job_name="ps", task_index=0)
+  server = tf.distribute.Server(cluster, job_name="ps", task_index=0)
   server.join()

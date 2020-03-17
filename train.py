@@ -17,15 +17,15 @@ if __name__ == "__main__":
   eval_frequency = config["eval_frequency"]
 
   model = cm.CorefModel(config)
-  saver = tf.train.Saver()
+  saver = tf.compat.v1.train.Saver()
 
   log_dir = config["log_dir"]
-  writer = tf.summary.FileWriter(log_dir, flush_secs=20)
+  writer = tf.compat.v1.summary.FileWriter(log_dir, flush_secs=20)
 
   max_f1 = 0
 
-  with tf.Session() as session:
-    session.run(tf.global_variables_initializer())
+  with tf.compat.v1.Session() as session:
+    session.run(tf.compat.v1.global_variables_initializer())
     model.start_enqueue_thread(session)
     accumulated_loss = 0.0
 

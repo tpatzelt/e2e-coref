@@ -21,23 +21,23 @@ if __name__ == "__main__":
   util.set_gpus(cluster_config["gpus"][task_index])
 
   cluster = tf.train.ClusterSpec(cluster_config["addresses"])
-  server = tf.train.Server(cluster,
+  server = tf.distribute.Server(cluster,
                            job_name="worker",
                            task_index=task_index)
 
   # Assigns ops to the local worker by default.
-  with tf.device(tf.train.replica_device_setter(worker_device="/job:worker/task:%d" % task_index, cluster=cluster)):
+  with tf.device(tf.compat.v1.train.replica_device_setter(worker_device="/job:worker/task:%d" % task_index, cluster=cluster)):
     model = cm.CorefModel(config)
-    saver = tf.train.Saver()
-    init_op = tf.global_variables_initializer()
+    saver = tf.compat.v1.train.Saver()
+    init_op = tf.compat.v1.global_variables_initializer()
 
   log_dir = config["log_dir"]
-  writer = tf.summary.FileWriter(os.path.join(log_dir, "w{}".format(task_index)), flush_secs=20)
+  writer = tf.compat.v1.summary.FileWriter(os.path.join(log_dir, "w{}".format(task_index)), flush_secs=20)
 
   is_chief = (task_index == 0)
 
   # Create a "supervisor", which oversees the training process.
-  sv = tf.train.Supervisor(is_chief=is_chief,
+  sv = tf.compat.v1.train.Supervisor(is_chief=is_chief,
                            logdir=log_dir,
                            init_op=init_op,
                            saver=saver,

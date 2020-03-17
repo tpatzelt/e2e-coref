@@ -12,6 +12,6 @@ import util
 if __name__ == "__main__":
   config = util.initialize_from_env()
   model = cm.CorefModel(config)
-  with tf.Session() as session:
+  with tf.compat.v1.Session() as session:
     model.restore(session)
     model.evaluate(session, official_stdout=True)

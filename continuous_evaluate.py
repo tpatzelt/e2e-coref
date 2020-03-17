@@ -20,14 +20,14 @@ if __name__ == "__main__":
   config = util.initialize_from_env()
   model = cm.CorefModel(config)
 
-  saver = tf.train.Saver()
+  saver = tf.compat.v1.train.Saver()
   log_dir = config["log_dir"]
-  writer = tf.summary.FileWriter(log_dir, flush_secs=20)
+  writer = tf.compat.v1.summary.FileWriter(log_dir, flush_secs=20)
   evaluated_checkpoints = set()
   max_f1 = 0
   checkpoint_pattern = re.compile(".*model.ckpt-([0-9]*)\Z")
 
-  with tf.Session() as session:
+  with tf.compat.v1.Session() as session:
     while True:
       ckpt = tf.train.get_checkpoint_state(log_dir)
       if ckpt and ckpt.model_checkpoint_path and ckpt.model_checkpoint_path not in evaluated_checkpoints:

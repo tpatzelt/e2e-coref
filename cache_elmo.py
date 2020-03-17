@@ -10,8 +10,8 @@ import json
 import sys
 
 def build_elmo():
-  token_ph = tf.placeholder(tf.string, [None, None])
-  len_ph = tf.placeholder(tf.int32, [None])
+  token_ph = tf.compat.v1.placeholder(tf.string, [None, None])
+  len_ph = tf.compat.v1.placeholder(tf.int32, [None])
   elmo_module = hub.Module("https://tfhub.dev/google/elmo/2")
   lm_embeddings = elmo_module(
       inputs={"tokens": token_ph, "sequence_len": len_ph},
@@ -48,8 +48,8 @@ def cache_dataset(data_path, session, token_ph, len_ph, lm_emb, out_file):
 
 if __name__ == "__main__":
   token_ph, len_ph, lm_emb = build_elmo()
-  with tf.Session() as session:
-    session.run(tf.global_variables_initializer())
+  with tf.compat.v1.Session() as session:
+    session.run(tf.compat.v1.global_variables_initializer())
     with h5py.File("elmo_cache.hdf5", "w") as out_file:
       for json_filename in sys.argv[1:]:
         cache_dataset(json_filename, session, token_ph, len_ph, lm_emb, out_file)

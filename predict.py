@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
   model = cm.CorefModel(config)
 
-  with tf.Session() as session:
+  with tf.compat.v1.Session() as session:
     model.restore(session)
 
     with open(output_filename, "w") as output_file:
