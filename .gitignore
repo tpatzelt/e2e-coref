@@ -9,4 +9,4 @@ glove*.txt.filtered
 *.v*_*_conll
 *.hdf5
 venv/
-
+ontonotes-release-5.0/
