@@ -9,7 +9,7 @@ from pathlib import Path
 # Check if directory exists
 def chkdir(chk):
     if not os.path.isdir(chk):
-        raise NotADirectoryError()
+        raise NotADirectoryError(str(chk))
     else:
         return chk
 
